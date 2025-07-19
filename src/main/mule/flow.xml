@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="flowFlow" doc:id="cc36373e-3c6d-449f-b3bb-56b8056c143f" >
+		<http:listener doc:name="Listener" doc:id="327747b8-c32f-4acf-8b66-8e1fdc7c25b3" config-ref="HTTP_Listener_config" path="/pa"/>
+		<set-payload value='#["sai"]' doc:name="Set Payload" doc:id="9757f25c-1db2-4397-934e-b0820f13793c" />
+		<choice doc:name="Choice" doc:id="d032ce70-208b-46f6-8fa0-28371d134643" >
+			<when expression='#[payload != "hari"]'>
+				<set-payload value='#["happy1"]' doc:name="Set Payload" doc:id="bea5ee67-ecbc-4040-900e-ff5ab058c306" />
+			</when>
+			<when expression='payload != "hari"'>
+				<set-payload value='#["happy2"]' doc:name="Set Payload" doc:id="ec6acbb3-5768-4b49-b642-ab67f8ee1f87" />
+			</when>
+			<otherwise>
+				<ee:transform doc:name="Transform Message" doc:id="6f340387-bbd9-4ee3-828b-f1c966f80bde" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"sorry"]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>

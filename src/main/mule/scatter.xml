@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:request-config name="HTTP_Request_configuration1" doc:name="HTTP Request configuration" doc:id="c20ddd26-e4f8-4f3b-b630-44119adbc247" >
+		<http:request-connection host="localhost" port="8081" />
+	</http:request-config>
+	<flow name="scatterFlow" doc:id="53853c09-43fb-470b-96b1-1cfe441eea8b" >
+		<http:listener doc:name="Listener" doc:id="fafe3317-83d9-4d66-92b0-e1d5223e1994" config-ref="HTTP_Listener_config" path="/path2"/>
+		<logger level="INFO" doc:name="Logger" doc:id="d54c8b69-41d3-4608-bc26-048b445c6fac" message='#["started"]'/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="e342b20b-ddc0-408a-b59a-62e653726ad9">
+			<route >
+				<http:request method="GET" doc:name="Request" doc:id="436b04e3-c860-4aec-bcde-6b82fe0bb27b" config-ref="HTTP_Request_configuration1" path="/primary" responseTimeout="100000"/>
+			</route>
+			<route >
+				<http:request method="GET" doc:name="Request" doc:id="16386580-f76d-4ac2-9527-6bb195ccfe96" config-ref="HTTP_Request_configuration1" path="/secondary"/>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Transform Message" doc:id="07ce6979-8b7c-4ad7-bf46-25430b865d8b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
