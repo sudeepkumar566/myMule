@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="719b26ca-a669-42ef-a905-befc9c515e06" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<os:object-store name="Object_store" doc:name="Object store" doc:id="4b962f6f-4bd9-4c53-80d4-d27978c89f8c" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="1d3d35e2-ac7a-4474-ab42-b180704dc9f9" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="root" database="db" />
+	</db:config>
+	<!-- [STUDIO:"objectFlow"]<flow name="objectFlow" doc:id="85d6e451-2752-40ae-abab-cb94a5b0bf8e" >
+		<scheduler doc:name="Scheduler" doc:id="7c42c00d-a2c5-4434-9906-38a4f2fd8a28" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="1" timeUnit="MINUTES"/>
+			</scheduling-strategy>
+		</scheduler>
+		<os:retrieve doc:name="Retrieve" doc:id="aa7f0925-d1f0-46b4-bff7-2074014816f8" key="maxId" objectStore="Object_store" target="maxId">
+			<os:default-value ><![CDATA[0&#93;&#93;></os:default-value>
+		</os:retrieve>
+		<db:select doc:name="Select" doc:id="21859d32-c89d-4605-8f46-e964929976f2" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from tdb where id > :maxId&#93;&#93;></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	maxId : vars.maxId
+}&#93;&#93;&#93;></db:input-parameters>
+		</db:select>
+		<logger level="INFO" doc:name="Logger" doc:id="4a55e6f6-b684-4b16-9b08-502ee0535def" message="#[payload&#93;"/>
+		<os:store doc:name="Store" doc:id="b0471e73-58c3-4e02-8841-190d83b63c83" key="maxId" objectStore="Object_store">
+			<os:value ><![CDATA[#[max(payload.id)&#93;&#93;&#93;></os:value>
+		</os:store>
+	</flow> [STUDIO] -->
+</mule>
